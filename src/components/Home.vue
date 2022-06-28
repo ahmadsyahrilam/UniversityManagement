@@ -3,17 +3,21 @@
   <br />
   <hr />
   <br />
-  <input
-    style="border: solid black 1px"
-    v-model.trim="search"
-    placeholder="Search university..."
-    @keyup="getUniList"
-  />
-  <div class="item error" v-if="input && !filteredList().length">
-    <p>No results found!</p>
-  </div>
+
+  <form @submit.prevent="getData">
+    <input
+      type="search"
+      v-model="query"
+      style="border: solid black 1px; padding: 0.5em"
+      placeholder="Search university..."
+    />
+    <input style="border: solid grey 1px; padding: 0.5em" type="submit" />
+  </form>
+
+  {{ universities.name }}
 
   <br />
+
   <table class="table-auto">
     <thead>
       <tr>
@@ -28,6 +32,23 @@
       </tr>
     </tbody>
   </table>
+
+  <!-- working code -->
+  <!-- <div>
+    <form @submit.prevent="getData">
+      <input
+        style="border: solid grey 1px; padding: 0.5em"
+        type="search"
+        v-model="query"
+      />
+      <input style="border: solid grey 1px; padding: 0.5em" type="submit" />
+    </form>
+    <ul>
+      <li v-for="(item, index) in data" :key="item.id">
+        {{ index + 1 }}. {{ item.advice }}
+      </li>
+    </ul>
+  </div> -->
 </template>
 
 <script>
@@ -39,8 +60,40 @@ export default {
   data() {
     return {
       universities: [],
+      //searchValue: "",
+      query: null,
+      //data: [],
     };
   },
+
+  // methods: {
+  //   async getData() {
+  //     await axios
+  //       .get(`http://universities.hipolabs.com/search?country=Malaysia`)
+  //       .then((response) => {
+  //         console.log("university name: ", response.data);
+  //         this.universities = response.data;
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   },
+  // },
+
+  // methods: {
+  //   async getData() {
+  //     //console.log(this.query);
+  //     await axios
+  //       .get(`https://api.adviceslip.com/advice/search/${this.query}`)
+  //       .then((response) => {
+  //         this.data = response.data.slips;
+  //         console.log(this.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   },
+  // },
 
   mounted() {
     //GET LIST OF UNIVERSITIES FROM API -> http://universities.hipolabs.com/search?country=Malaysia
