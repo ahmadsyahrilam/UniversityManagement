@@ -4,7 +4,7 @@
   <hr />
   <br />
 
-  <form @submit.prevent="getData">
+  <!-- <form @submit.prevent="getData">
     <input
       type="search"
       v-model="query"
@@ -14,21 +14,45 @@
     <input style="border: solid grey 1px; padding: 0.5em" type="submit" />
   </form>
 
-  {{ universities.name }}
+  {{ universities.name }} -->
+
+  <div style="display: flex; justify-content: center">
+    <input
+      style="border: solid grey 2px; width: 70%"
+      type="text"
+      v-model="serach"
+      placeholder="Search Universities"
+    />
+  </div>
 
   <br />
 
-  <table class="table-auto">
+  <table
+    style="
+      border-collapse: collapse;
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+    "
+  >
     <thead>
       <tr>
-        <th>Name of University</th>
-        <th>URL</th>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px">
+          Name of University
+        </th>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px">
+          URL
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="university in universities" v-bind:key="university.id">
-        <td>{{ university.name }}</td>
-        <td>{{ university.domains }}</td>
+      <tr v-for="university in filterUniversity" v-bind:key="university.id">
+        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px">
+          {{ university.name }}
+        </td>
+        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px">
+          {{ university.domains }}
+        </td>
       </tr>
     </tbody>
   </table>
@@ -63,6 +87,7 @@ export default {
       //searchValue: "",
       query: null,
       //data: [],
+      serach: "",
     };
   },
 
@@ -102,9 +127,39 @@ export default {
       .then((response) => {
         console.log("university name: ", response.data);
         this.universities = response.data;
+
+        // console.log(
+        //   "domain :",
+        //   JSON.parse(JSON.stringify(response.data))
+        // );
+
+        //JSON.parse(JSON.stringify(userData))
+
         //console.log("university name:", response.data[0].name);
       })
       .catch((error) => console.log(error));
   },
+
+  computed: {
+    filterUniversity: function () {
+      return this.universities.filter((university) => {
+        return university.name
+          .toLowerCase()
+          .includes(this.serach.toLowerCase()); //search includes lowercase
+      });
+    },
+  },
+
+  //  computed: {
+  //   resultQuery(){
+  //     if(this.searchQuery){
+  //     return this.resources.filter((item)=>{
+  //       return this.searchQuery.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v))
+  //     })
+  //     }else{
+  //       return this.resources;
+  //     }
+  //   }
+  // }
 };
 </script>
